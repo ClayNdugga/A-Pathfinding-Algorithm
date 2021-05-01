@@ -1,7 +1,5 @@
 #Import and Initialize Libraries
 import sys, pygame, time
-from queue import PriorityQueue
-
 
 pygame.init()
 
@@ -320,12 +318,7 @@ def main(win, width):
 
 
     if DEBUG == True:
-        
-        node = grid[6][2]
-        print(node.parent.position)
-
-
-
+    
         #for x in range(50):  
             #for y in range(50):
                 #node = grid[x][y]
@@ -336,9 +329,7 @@ def main(win, width):
                 #if node.parent != None:
                     #print(node.parent.position)
                     
-    
-       
-    pygame.quit()
+        pygame.quit()
 
 main(WIN, WIDTH)
 
