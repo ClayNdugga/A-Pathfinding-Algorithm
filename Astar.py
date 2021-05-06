@@ -91,6 +91,7 @@ def drawGrid(width, rows):
         for y in range(0, width, space):
             pygame.draw.rect(WIN, GREY, (x, y, space, space), 1)
 
+
 #Get position of clicked node on screen
 def getPos(x, y, width, rows):
     col = x // (width / rows)
@@ -105,6 +106,8 @@ def calc_h(child, goal):
     x2, y2 = goal.position
     return abs(x1 - x2) + abs (y1 - y2)
 
+
+#Draw the shortest path between the Start, and Goal Node
 def return_path(grid, width, rows, current_node, start):
     current = current_node
     while current.position != start.position:
@@ -118,9 +121,11 @@ def return_path(grid, width, rows, current_node, start):
         drawGrid(width, rows)
         current = current.parent
 
-        #if DEBUG == True:
-        #    time.sleep(3)
+        if DEBUG == True:
+            time.sleep(3)
 
+
+#Check if a specfic node is in a given list  
 def checklist(node_to_check, list_checked):
     for node in list_checked:
         if node == node_to_check:
@@ -129,6 +134,7 @@ def checklist(node_to_check, list_checked):
     return False
         
 
+#Check if a specigic Node is in a given list, and if it's g-score is lower 
 def checklist_and_g(node_to_check, list_checked):
     for node in list_checked:
         if (node == node_to_check) and (node_to_check.g < node.g):
@@ -136,6 +142,7 @@ def checklist_and_g(node_to_check, list_checked):
         
     return False
 
+#The A* algorithm 
 def algorithm(grid, width, start, goal, rows):
 
     # Define Start and End Nodes
@@ -176,18 +183,22 @@ def algorithm(grid, width, start, goal, rows):
         open_list.pop(current_index)
         closed_list.append(current_node)
 
-        #Make closed list nodes red
+        #Make closed list nodes red for visulization 
         current_node.makeClosed()
         current_node.draw(width, rows)
         drawGrid(width, rows)
 
+
+        # Draw the shorest path the goal if it is the current node 
         if current_node == goal:
-            print("DONE")  
+            if DEBUG == True:
+                print("DONE")  
             return_path(grid, width, rows, current_node, start)
             break
         
         #Find all children around current_node
         for new_position in neighbors:
+
             #Get node postion
             node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
 
@@ -198,7 +209,6 @@ def algorithm(grid, width, start, goal, rows):
             #Check to see if new node is on barrier
             temp_x, temp_y = node_position 
             temp_node = grid[temp_x][temp_y]
-
             if temp_node.color == BLACK:
                 continue 
 
@@ -228,7 +238,7 @@ def algorithm(grid, width, start, goal, rows):
 
             #Add child to open list
             open_list.append(child)
-            #Make open list nodes green
+            #Make open list nodes green for visulization 
             child.makeOpen()
             child.draw(width, rows)
             drawGrid(width, rows)
@@ -248,10 +258,6 @@ def main(win, width):
 
     grid = makeGrid(width, ROWS)
     drawGrid(width, ROWS)
-
-    #testSpot = grid[2][4]
-    #testSpot.start()
-    #print(testSpot.color)
     
     start = None
     goal = None
